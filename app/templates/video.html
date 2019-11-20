@@ -3,7 +3,34 @@
 {% block content %}
 <div class="container">
   <br>
-  <h5>{{ video['title'] }}</h5>
+  <video width="100%" height="60%" controls>
+    <source src="{{ video['directUrl'] }}" type="video/mp4">
+    Your browser does not support the video tag :(
+  </video>
+  <br>
+  <br>
+  <h4>{{ video['title'] }}</h4>
+  <table width="100%">
+    <tr>
+      <td>
+        <strong>Shared by </strong><a href="{{ baseaddr ~ video['channelLink'] }}">{{ video['channelName'] }}</a>
+        <br>
+        {{ video['date'] }}
+      </td>
+      <td align="right">
+        <a class="btn btn-danger" style="color: white;">Subscribe | {{ video['subCount'] }}</a> 
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Views: </strong> {{ video['views'] }}
+        <br>
+        <strong>Likes: </strong> {{ video['likes'] }}
+        <br>
+        <strong>Dislikes: </strong> {{ video['dislikes'] }}
+      </td>
+    </tr>
+  </table>
 </div>
 <br>
 {% endblock %}
