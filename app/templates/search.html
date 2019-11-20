@@ -23,7 +23,19 @@
           </div>
         </div>
     {% endfor %}
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">
+          {% if page > 1 %}
+            <a href="{{prev_page}}">Previous Page</a>
+          {% endif %}
+        </div>
+        <div class="col-md-6"></div>
+        <div class="col-md-3">
+          <a href="{{next_page}}">Next Page</a>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
 <br>
 {% endblock %}
