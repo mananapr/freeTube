@@ -9,9 +9,9 @@
           <div class="thumbnail">
             <img src="{{ video['thumbnail'] }}" width="260" height="195">
             <div class="caption">
-              <a href="{{ video['url'] }}"><h6 align="left">{{ video['title'] }}</h6></a>
+              <a href="{{ baseaddr ~ video['url'] }}"><h6 align="left">{{ video['title'] }}</h6></a>
               <p align="left">
-                <a href="{{ video['channelUrl'] }}"><strong>{{ video['channelTitle'] }}</strong></a>
+                <a href="{{ baseaddr ~ video['channelUrl'] }}"><strong>{{ video['channelTitle'] }}</strong></a>
                 <br>
                 <strong>Duration: </strong>{{ video['duration'] }}
                 <br>
