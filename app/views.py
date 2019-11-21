@@ -24,7 +24,7 @@ def search():
     payload = {'query':query}
     response = requests.post(API_URL+"search?page="+str(page), json=payload)
     results = json.loads(response.text)['videos']
-    return render_template('search.html', title='Search', page=page, results=results, prev_page="/search?search={}&page={}".format(query,str(page-1)), next_page="/search?search={}&page={}".format(query,str(page+1)), baseaddr=SERVER_DOMAIN_NAME)
+    return render_template('search.html', title='Search', page=page, results=results, query=query, prev_page="/search?search={}&page={}".format(query,str(page-1)), next_page="/search?search={}&page={}".format(query,str(page+1)), baseaddr=SERVER_DOMAIN_NAME)
 
 @app.route('/watch', methods=['GET'])
 def watch():
