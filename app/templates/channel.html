@@ -9,7 +9,11 @@
         <h4>{{ channelName }}</h4>
       </td>
       <td align="right">
-        <a class="btn btn-danger" style="color: white;">Subscribe | {{ subCount }}</a>
+        {% if session.get('subscribedChannelsURLs') is none or channelLink not in session.get('subscribedChannelsURLs') %}
+            <a class="btn btn-danger" style="color: white;" href="{{ '/subscribe?channelURL=' ~ channelLink ~ '&redirect=' ~ baseaddr ~ channelLink }}">Subscribe | {{ subCount }}</a> 
+        {% else %}
+            <a class="btn btn-secondary" style="color: white;" href="{{ '/subscribe?channelURL=' ~ channelLink ~ '&redirect=' ~ baseaddr ~ channelLink }}">Subscribed</a> 
+        {% endif %}
       </td>
     </tr>
   </table>

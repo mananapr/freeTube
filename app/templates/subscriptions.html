@@ -3,7 +3,7 @@
 {% block content %}
 <div class="container">
   <br>
-  <h4 align="center">Search Results for Query <strong>"{{ query }}"</strong> | Page {{ page }}</h4>
+  <h4 align="center">Latest Videos From Channels You Love</h4>
   <hr>
   <div class="row text-center" style="display:flex; flex-wrap:wrap;">
     {% for video in results %}
@@ -13,7 +13,7 @@
             <div class="caption">
               <a href="{{ baseaddr ~ video['url'] }}"><h6 align="left">{{ video['title'] }}</h6></a>
               <p align="left">
-                <a href="{{ baseaddr ~ video['channelUrl'] }}"><strong>{{ video['channelTitle'] }}</strong></a>
+                <a href="{{ baseaddr ~ video['channelLink'] }}">{{ video['channelName'] }}</a>
                 <br>
                 <strong>Duration: </strong>{{ video['duration'] }}
                 <br>
@@ -25,19 +25,7 @@
           </div>
         </div>
     {% endfor %}
-    <div class="container">
-      <div class="row">
-        <div class="col-md-3">
-          {% if page > 1 %}
-            <a href="{{prev_page}}">Previous Page</a>
-          {% endif %}
-        </div>
-        <div class="col-md-6"></div>
-        <div class="col-md-3">
-          <a href="{{next_page}}">Next Page</a>
-        </div>
-      </div>
-    </div>
   </div>
+</div>
 <br>
 {% endblock %}

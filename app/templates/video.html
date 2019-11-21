@@ -18,7 +18,11 @@
         {{ video['date'] }}
       </td>
       <td align="right">
-        <a class="btn btn-danger" style="color: white;">Subscribe | {{ video['subCount'] }}</a> 
+        {% if session.get('subscribedChannelsURLs') is none or video['channelLink'] not in session.get('subscribedChannelsURLs') %}
+            <a class="btn btn-danger" style="color: white;" href="{{ '/subscribe?channelURL=' ~ video['channelLink'] ~ '&redirect=' ~ baseaddr ~ '/watch?v=' ~ videoID }}">Subscribe | {{ video['subCount'] }}</a> 
+        {% else %}
+            <a class="btn btn-secondary" style="color: white;" href="{{ '/subscribe?channelURL=' ~ video['channelLink'] ~ '&redirect=' ~ baseaddr ~ '/watch?v=' ~ videoID }}">Subscribed</a> 
+        {% endif %}
       </td>
     </tr>
     <tr>
