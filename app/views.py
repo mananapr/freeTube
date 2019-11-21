@@ -36,3 +36,18 @@ def watch():
     response = requests.post(API_URL+"urlinfo", json=payload)
     results = json.loads(response.text)
     return render_template("video.html", title=results["title"], video=results, baseaddr=SERVER_DOMAIN_NAME)
+
+@app.route('/user/<id>', methods=['GET'])
+def user(id):
+    ytURL = "https://youtube.com/user/" + str(id)
+    payload = {'url':ytURL}
+    response = requests.post(API_URL+"channelinfo", json=payload)
+    results = json.loads(response.text)
+    return render_template("channel.html", title=results["channelName"], results=results["videos"], baseaddr=SERVER_DOMAIN_NAME, channelName=results["channelName"], subCount=results["channelSubCount"])
+@app.route('/channel/<id>', methods=['GET'])
+def channel(id):
+    ytURL = "https://youtube.com/channel/" + str(id)
+    payload = {'url':ytURL}
+    response = requests.post(API_URL+"channelinfo", json=payload)
+    results = json.loads(response.text)
+    return render_template("channel.html", title=results["channelName"], results=results["videos"], baseaddr=SERVER_DOMAIN_NAME, channelName=results["channelName"], subCount=results["channelSubCount"])

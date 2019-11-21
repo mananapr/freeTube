@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+  <br>
+  <table width="100%">
+    <tr>
+      <td>
+        <h4>{{ channelName }}</h4>
+      </td>
+      <td align="right">
+        <a class="btn btn-danger" style="color: white;">Subscribe | {{ subCount }}</a>
+      </td>
+    </tr>
+  </table>
+  <hr>
+  <div class="row text-center" style="display:flex; flex-wrap:wrap;">
+    {% for video in results %}
+        <div class="col-md-3 col-sm-6">
+          <div class="thumbnail">
+            <img src="{{ video['thumbnail'] }}" width="260" height="195">
+            <div class="caption">
+              <a href="{{ baseaddr ~ video['url'] }}"><h6 align="left">{{ video['title'] }}</h6></a>
+              <p align="left">
+                <strong>Duration: </strong>{{ video['duration'] }}
+                <br>
+                <strong>Shared {{ video['date'] }}</strong>
+                <br>
+                <strong>{{ video['views'] }}</strong>
+              </p>
+            </div>
+          </div>
+        </div>
+    {% endfor %}
+  </div>
+</div>
+<br>
+{% endblock %}
