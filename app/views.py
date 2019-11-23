@@ -1,12 +1,20 @@
-from flask import render_template, request, session, redirect
+from flask import render_template, request, session, redirect, url_for
 from app import app
 import requests
 import json
+from bs4 import BeautifulSoup
 
 SERVER_DOMAIN_NAME = 'http://127.0.0.1:8000'
 API_ADDR = 'http://127.0.0.1'
 API_PORT = '5000'
 API_URL = API_ADDR + ":" + API_PORT + "/api/v1/"
+
+def getChannelLink(userLink):
+    ytURL = "https://youtube.com"+userLink+"/videos"
+    response = requests.get(ytURL)
+    soup = BeautifulSoup(response.text, "html5lib")
+    channelLink = soup.find('meta', {'property':'og:url'})['content'][23:]
+    return channelLink
 
 @app.route('/')
 @app.route('/index')
@@ -40,11 +48,7 @@ def watch():
 
 @app.route('/user/<id>', methods=['GET'])
 def user(id):
-    ytURL = "https://youtube.com/user/" + str(id)
-    payload = {'url':ytURL}
-    response = requests.post(API_URL+"channelinfo", json=payload)
-    results = json.loads(response.text)
-    return render_template("channel.html", channelLink="/user/{}".format(id), title=results["channelName"], results=results["videos"], baseaddr=SERVER_DOMAIN_NAME, channelName=results["channelName"], subCount=results["channelSubCount"])
+    return redirect(SERVER_DOMAIN_NAME + getChannelLink('/user/'+str(id)))
 @app.route('/channel/<id>', methods=['GET'])
 def channel(id):
     ytURL = "https://youtube.com/channel/" + str(id)
