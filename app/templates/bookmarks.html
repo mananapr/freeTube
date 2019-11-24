@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+  <br>
+  <h4 align="center">Your Bookmarked Videos</h4>
+  <hr>
+  <div class="row text-center" style="display:flex; flex-wrap:wrap;">
+    {% for video in results %}
+        <div class="col-md-3 col-sm-6">
+          <div class="thumbnail">
+            <div class="caption">
+              <a href="{{ baseaddr ~ '/watch?v=' ~ video['videoID'] }}"><h6 align="left">{{ video['videoTitle'] }}</h6></a>
+              <p align="left">
+                <a href="{{ baseaddr ~ video['channelID'] }}"><strong>{{ video['channelName'] }}</strong></a>
+                <br>
+              </p>
+            </div>
+          </div>
+        </div>
+    {% endfor %}
+  </div>
+</div>
+<br>
+{% endblock %}

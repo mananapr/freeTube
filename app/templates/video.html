@@ -9,7 +9,14 @@
   </video>
   <br>
   <br>
-  <h4>{{ video['title'] }}</h4>
+  <h4>
+    {% if isBookmarked %}
+      <a style="color: inherit;" href="{{ '/bookmark?v=' ~ videoID ~ '&title=' ~ video['title'] ~ '&channelTitle=' ~ video['channelName'] ~ '&channelLink=' ~ video['channelLink'] ~ '&redirect=/watch?v=' ~ videoID  }}"><i style="color: yellow;" class="fa fa-star"></i></a>
+    {% else %}
+      <a style="color: inherit;" href="{{ '/bookmark?v=' ~ videoID ~ '&title=' ~ video['title'] ~ '&channelTitle=' ~ video['channelName'] ~ '&channelLink=' ~ video['channelLink'] ~ '&redirect=/watch?v=' ~ videoID  }}"><i class="fa fa-star-o"></i></a>
+    {% endif %}
+    {{ video['title'] }}
+  </h4>
   <table width="100%">
     <tr>
       <td>

@@ -36,7 +36,6 @@ def search():
 
 @app.route('/watch', methods=['GET'])
 def watch():
-    print(session['subscribedChannelsURLs'])
     videoID = request.args.get('v', default="error")
     if videoID == "error":
         return "Please specify a valid video"
@@ -44,7 +43,12 @@ def watch():
     payload = {'url':ytURL}
     response = requests.post(API_URL+"urlinfo", json=payload)
     results = json.loads(response.text)
-    return render_template("video.html", title=results["title"], video=results, baseaddr=SERVER_DOMAIN_NAME, videoID=videoID)
+    isBookmarked = 0
+    for video in session.get('bookmarks'):
+        if videoID == video['videoID']:
+            isBookmarked = 1
+            break
+    return render_template("video.html", title=results["title"], video=results, baseaddr=SERVER_DOMAIN_NAME, videoID=videoID, isBookmarked=isBookmarked)
 
 @app.route('/user/<id>', methods=['GET'])
 def user(id):
@@ -73,10 +77,43 @@ def subscribe():
         session['subscribedChannelsURLs'] = session['subscribedChannelsURLs'] + [channelURL]
     return redirect(redirectURL)
 
+@app.route('/bookmark', methods=['GET'])
+def bookmark():
+    redirectURL = request.args.get('redirect', default='/index')
+    videoID = request.args.get('v')
+    videoTitle = request.args.get('title')
+    channelName = request.args.get('channelTitle')
+    channelID = request.args.get('channelLink')
+    isBookmarked = 0
+    bookmarkIndex = -1
+    if session.get('bookmarks') == None:
+        session['bookmarks'] = []
+    for video in session['bookmarks']:
+        bookmarkIndex = bookmarkIndex + 1
+        if videoID == video['videoID']:
+            isBookmarked=1
+            break
+    if isBookmarked == 0:
+        videoDict = {
+            'videoID':videoID,
+            'videoTitle':videoTitle,
+            'channelName':channelName,
+            'channelID':channelID
+        }
+        session['bookmarks'] = session['bookmarks'] + [videoDict]
+    else:
+        index = -1
+        newList = []
+        for video in session['bookmarks']:
+            index = index + 1
+            if index != bookmarkIndex:
+                newList.append(video)
+        session['bookmarks'] = newList
+    return redirect(redirectURL)
+
 @app.route('/subscriptions', methods=['GET'])
 def subscriptions():
     videos = []
-    print(session['subscribedChannelsURLs'])
     if session.get('subscribedChannelsURLs') is not None:
         for channelURL in session.get('subscribedChannelsURLs'):
             ytURL = "https://youtube.com" + channelURL
@@ -87,3 +124,10 @@ def subscriptions():
             results[0]["channelLink"] = channelURL
             videos.append(results[0])
     return render_template("subscriptions.html", title="Subscriptions", results=videos, baseaddr=SERVER_DOMAIN_NAME)
+
+@app.route('/bookmarks', methods=['GET'])
+def bookmarks():
+    videos = []
+    if session.get('bookmarks') is not None:
+        videos = session.get('bookmarks')
+    return render_template("bookmarks.html", title="Bookmarks", results=videos, baseaddr=SERVER_DOMAIN_NAME)
