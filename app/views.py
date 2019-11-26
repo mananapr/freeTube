@@ -44,10 +44,11 @@ def watch():
     response = requests.post(API_URL+"urlinfo", json=payload)
     results = json.loads(response.text)
     isBookmarked = 0
-    for video in session.get('bookmarks'):
-        if videoID == video['videoID']:
-            isBookmarked = 1
-            break
+    if session.get('bookmarks'):
+        for video in session.get('bookmarks'):
+            if videoID == video['videoID']:
+                isBookmarked = 1
+                break
     return render_template("video.html", title=results["title"], video=results, baseaddr=SERVER_DOMAIN_NAME, videoID=videoID, isBookmarked=isBookmarked)
 
 @app.route('/user/<id>', methods=['GET'])
